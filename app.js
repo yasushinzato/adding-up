@@ -14,13 +14,13 @@ rl.on('line', (lineString) => {
     const prefecture = columns[2];
     const popu = parseInt(columns[7]);
     if (year == 2010 || year == 2015) {
-        // 連想配列の初期化
+        // (都道府県が変るたびに)連想配列を初期化
         let value = map.get(prefecture);
         if(!value) {
             value = {
                 popu10: 0, //2010年集計
                 popu15: 0, //2015年集計
-                change: null //変化量
+                change: null //変化量 　最後に計算する。
             };
         }
         if (year === 2010) {
@@ -42,6 +42,13 @@ rl.on('close', () =>{
         const value = pair[1]; //mapにあるvalue配列をセット
         value.change = value.popu15 / value.popu10;
     }
-    console.log(map)
+    // 変化率毎に降順で並べ替え
+    const rankingArray = Array.from(map).sort((pair1,pair2) => {
+        return pair2[1].change - pair1[1].change;
+    });
+    const rankingStrings = rankingArray.map((pair) => {
+        return pair[0] + ': ' + pair[1].popu10 + '=>' + pair[1].popu15 + '変化率:'+ pair[1].change;
+    })
+    console.log(rankingStrings);
 });
 
