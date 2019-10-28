@@ -42,12 +42,13 @@ rl.on('close', () =>{
         const value = pair[1]; //mapにあるvalue配列をセット
         value.change = value.popu15 / value.popu10;
     }
-    // 変化率毎に降順で並べ替え
+    // 変化率毎に昇順で並べ替え
     const rankingArray = Array.from(map).sort((pair1,pair2) => {
-        return pair2[1].change - pair1[1].change;
+        return pair1[1].change - pair2[1].change;
     });
-    const rankingStrings = rankingArray.map((pair) => {
-        return pair[0] + ': ' + pair[1].popu10 + '=>' + pair[1].popu15 + '変化率:'+ pair[1].change;
+    // 順位も追加する。
+    const rankingStrings = rankingArray.map((pair,rank) => {
+        return (rank + 1) + '位 :' + pair[0] + ': ' + pair[1].popu10 + '=>' + pair[1].popu15 + '変化率:'+ pair[1].change;
     })
     console.log(rankingStrings);
 });
